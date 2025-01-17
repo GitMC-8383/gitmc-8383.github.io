@@ -1,0 +1,689 @@
+<!DOCTYPE html><html><head><title>Evil Dictatorship Simulator</title><meta http-equiv="content-type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui=1"><meta charset="UTF-8"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="description" content=""><link rel="manifest" href="manifest.json"><link rel="icon" type="image/png" href="icon64.png"><link rel="apple-touch-icon" sizes="180x180" href="icon180.png"><link rel="icon" type="image/png" sizes="32x32" href="icon32.png"><link rel="icon" type="image/png" sizes="16x16" href="icon16.png"><style>html,body {
+  margin: 0;
+  padding: 0;
+  background-color: #000;
+  overflow:hidden;
+  font-family: Verdana;
+}
+.noselect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+#canvaswrapper {
+  text-align: center ;
+}
+</style><style>@font-face { font-family: "BitCell" ; src: url("fonts/BitCell.ttf") format("truetype"); }</style><style>@font-face { font-family: "PixelArial" ; src: url("fonts/PixelArial.ttf") format("truetype"); }</style><script>window.fonts = ["BitCell","PixelArial"]</script></head><body class="noselect custom-cursor" oncontextmenu="return false;"><div id="canvaswrapper"></div><script type="text/javascript">var resources = {"images":[{"file":"arrow.png","version":36,"size":1574,"properties":{"frames":14,"fps":24}},{"file":"bannericon.png","version":2,"size":985,"properties":{"frames":1,"fps":5}},{"file":"blurtitlescreen.png","version":1,"size":1410836,"properties":{}},{"file":"canada.png","version":1,"size":10316,"properties":{}},{"file":"capital.png","version":69,"size":615,"properties":{"frames":1,"fps":5}},{"file":"china.png","version":1,"size":9294,"properties":{}},{"file":"city.png","version":3,"size":473,"properties":{"frames":1,"fps":5}},{"file":"frozenfire1x_palette.png","version":9,"size":218,"properties":{"frames":1,"fps":5}},{"file":"icon.png","version":72,"size":15037,"properties":{"frames":1,"fps":5}},{"file":"logo.png","version":1,"size":11767,"properties":{}},{"file":"office.png","version":1,"size":3776766,"properties":{}},{"file":"poster.png","version":1,"size":368656,"properties":{}},{"file":"propaganda.png","version":15,"size":238,"properties":{"frames":1,"fps":5}},{"file":"revolt.png","version":2,"size":326,"properties":{"frames":1,"fps":5}},{"file":"revoltingcapital.png","version":26,"size":1736,"properties":{"frames":14,"fps":20}},{"file":"revoltingcity.png","version":45,"size":876,"properties":{"frames":21,"fps":20}},{"file":"rubble.png","version":73,"size":414,"properties":{"frames":2,"fps":12}},{"file":"russia.png","version":1,"size":17308,"properties":{}},{"file":"star.png","version":15,"size":266,"properties":{"frames":4,"fps":5}},{"file":"titlescreen.png","version":1,"size":2336551,"properties":{}},{"file":"tutorial.png","version":3,"size":3512,"properties":{"frames":1,"fps":5}},{"file":"unitedstates.png","version":1,"size":7302,"properties":{}},{"file":"world.png","version":1,"size":202870,"properties":{}}],"assets":[],"maps":{},"sounds":[],"music":[]};
+var graphics = "M1";
+
+</script><script type="text/javascript">var orientation = 'landscape' ;
+var aspect = '>16x9' ;
+var ms_libs = [] ;
+window.skip_service_worker = true;
+window.exported_project = true;
+window.ms_use_server = false ;
+</script><script src="compiler.js"></script><script src="parser.js"></script><script src="processor.js"></script><script src="program.js"></script><script src="routine.js"></script><script src="runner.js"></script><script src="token.js"></script><script src="tokenizer.js"></script><script src="transpiler.js"></script><script src="microengine.js"></script></body><script type="text/javascript">//
+//
+// The game is started with the code below.
+// Once you have received the "started" signal (see below),
+// you can do the following:
+// 1) Inject functions or objects into the global context of the microStudio engine, example:
+//
+//   window.player.setGlobal("special_callback",function(x) { console.info(x) }) ;
+//   // Your microScript code can now call the "special_callback" function
+//
+// 2) Call microScript global functions from your JavaScript code, example:
+//
+//   window.player.call("call_me_from_javascript",[10,1000]) ;
+//   // arguments to the function call are provided as an array
+//
+// 3) Run a microScript code snippet from your JavaScript code, example:
+//
+//   window.player.exec("player.position_x = 50",function(result) { console.log(result) ; }) ;
+//
+
+window.addEventListener("load",function() {
+  window.player = new Player(function(event) {
+    if (event.name == "started") {
+      // signal that the game is started
+    }
+    else if (event.name == "log") {
+      // console.info(event.data) ;
+    }
+  }) ;
+  document.body.focus() ;
+}) ;
+
+</script><script id="code" type="text/x-microscript">
+
+
+function()
+bar = function(x,y,name,valueindex,priceindex,color,controls)
+  price = prices[priceindex]
+  value = stats[valueindex]
+  screen.fillRoundRect(x,y,100,15,2,color+"2")
+  screen.fillRoundRect(x-(100-value)/2,y,value,15,2,color)
+  screen.drawText(name+" ("+floor(value)+"%)",x+screen.textWidth(name+" ("+floor(value)+")",3)/2-44,y,3,"#fff")
+  if controls == 1 and stats[valueindex] < 100 then
+    if hover(x-54,y,8,15) then
+      screen.fillRoundRect(x-54,y,8,15,2,color)
+      screen.drawText("+",x-53.5,y,5,"#111")
+      if mouse.press and money >= price then
+        money -= price
+        prices[priceindex] *= 1.05
+        stats[valueindex] += 1
+      end  
+    else
+      screen.fillRoundRect(x-54,y,8,15,2,"#111")
+      screen.drawText("+",x-53.5,y,5,color)
+    end
+    screen.drawText("$"+floor(price)+"B",x+40,y,3,"#fffa")
+  elsif controls == 2 then
+    if hover(x-54,y,8,15) then
+      screen.fillRoundRect(x-54,y,8,15,2,color)
+      screen.fillRoundRect(x+54,y,8,15,2,"#111")
+      screen.drawText("+",x-54,y,5,"#111")
+      screen.drawText("-",x+54.5,y,5,color)
+      if mouse.press and value<100 then
+        stats[valueindex] += 1
+      end 
+    elsif hover(x+54,y,8,15) then
+      screen.fillRoundRect(x-54,y,8,15,2,"#111")
+      screen.fillRoundRect(x+54,y,8,15,2,color)
+      screen.drawText("+",x-54,y,5,color)
+      screen.drawText("-",x+54.5,y,5,"#111")
+      if mouse.press and value>0 then
+        stats[valueindex] -= 1
+      end 
+    else
+      screen.fillRoundRect(x-54,y,8,15,2,"#111")
+      screen.fillRoundRect(x+54,y,8,15,2,"#111")
+      screen.drawText("+",x-54,y,5,color)
+      screen.drawText("-",x+54.5,y,5,color)
+    end
+  end
+end
+
+hover = function(x, y, width, height)
+  local hover = true
+  if mouse.x < (x - width/2) then hover = false end
+  if mouse.x > (x + width/2) then hover = false end
+  if mouse.y < (y - height/2) then hover = false end
+  if mouse.y > (y + height/2) then hover = false end
+  return hover
+end
+
+initialize = function()
+  updateCountryData()
+  scaling = 2
+  cityscaling = 0.7
+  camx = 0-countries[countryid].cityx[0]*5*scaling
+  camy = 0-countries[countryid].cityy[0]*5*scaling
+  camxvel = 0
+  camyvel = 0
+  rightalign = screen.width/2
+  control = 22
+  unrest = 5
+  tutorialstate = 0
+  
+  if screen.height > screen.width then
+    mobile = true
+  else
+    mobile = false
+  end
+  
+  // govtcontrol = 30
+  // policecontrol = 30
+  // speech = 20
+  // military = 10
+  // taxrate = 8
+  
+  stats = [
+    8,30,30,20,10
+  ]
+  prices = [
+    20,10,35,25
+  ]
+  money = 0
+  month = 0
+  ticks = 0
+  len = []
+  time = object
+    seconds = 0
+    minutes = 0
+  end
+  gdp = 2300
+  tutorialsteps = [
+    "Welcome to Evil Dictatorship Simulator! Click Next to continue."
+    "The aim of the game is to reach 100% Control. You can see it in the top left."
+    "However, Unrest is always increasing too, and your actions can affect it for worse."
+    "If Unrest reaches 100%, you lose the game!"
+    "To gain Control, you must be able to put down revolts in cities and upgrade various stats."
+    "Revolts occur more frequently as Unrest increases. A city in revolt will be flashing with a red label."
+    "A revolting city's label shows the progress of the revolt."
+    "As your police and military put down the revolt, the bar shrinks. The revolt has ended when the label returns to normal."
+    "The stats you can change are in the top right."
+    "Use Excessive Taxes to raise the money to increase your power."
+    "Government Control means you have the power to increase your salary, so use this in tandem with taxes."
+    "Police Control helps put down revolts in your cities. They're not super effective, but very cheap."
+    "Military helps put down revolts several times faster than police, but they can only be in one city at a time."
+    "To use your Military, click on any city, and its label will turn green with an outline."
+    "Lastly, Press Control keeps other cities from hearing about revolts, and so limits the rate of Unrest."
+    "Your capital city is marked by green text on its label and a larger green city icon."
+    "When revolts reach your capital, you have only a short time to put it down before the populace unrest reaches the limit."
+    "It will probably take some tries to find the strategy that will bring you to complete power. Good luck!"
+  ]
+end
+
+updateCountryData = function()
+  countries = [ 
+    country = object
+      name = "Tutorial"
+      cityx = [5,-1,0]
+      cityy = [5,2,-5]
+      citynames = ["Tutorial City","Inland City","City-by-the-Bay"]
+      citystates = [0,0,0,0]
+      difficulty = 0
+    end
+    country = object
+      name = "Canada"
+      cityx = [13,8,17,-20,-18,-30,-6,20]
+      cityy = [-13,-15,-11,-5,1,-7,-6,-9]
+      citynames = ["Ottawa","Toronto","Montreal","Calgary","Edmonton","Vancouver","Winnipeg","Quebec City"]
+      citystates = [0,0,0,0]
+      difficulty = 1
+    end
+    country = object
+      name = "Russia"
+      cityx = [-55,-64,-45,-48]
+      cityy = [-2,3,-2,0]
+      citynames = ["Moscow","St. Petersburg","Kazan","Nizhny Novgorod"]
+      citystates = [0,0,0,0]
+      difficulty = 0
+    end
+    country = object
+      name = "China"
+      cityx = [16,22,19,8,16,-18]
+      cityy = [4,-4,-18,-7,-6,9]
+      citynames = ["Beijing","Shanghai","Guangzhou","Chongquing","Wuhan","Urumqi"]
+      citystates = [0,0,0,0]
+      difficulty = 0
+    end
+  ]
+end
+end()
+
+
+
+function()
+init = function()
+  countrynames = [
+    "Canada"
+    "China"
+    "Germany"
+    "Great Britain"
+    "Mexico"
+    "Russia"
+    "Spain"
+    "France"
+    "The United States of America"
+  ]
+  months = [
+    "January"
+    "February"
+    "March"
+    "April"
+    "May"
+    "June"
+    "July"
+    "August"
+    "September"
+    "October"
+    "November"
+    "December"
+  ]
+  initialize()
+end
+
+update = function()
+  rightalign = screen.width/2
+  if gamestate == 0 then
+    if mouse.press then gamestate = 0.1 end
+  elsif gamestate == 0.1 then
+    for i = 0 to countries.length-1
+      if hover(0+i*90-(3*85)/2,0,80,50) and mouse.press then
+        initialize()
+        countryid = i
+        camx = 0-countries[countryid].cityx[0]*5*1.4
+        camy = 0-countries[countryid].cityy[0]*5*1.4
+        tutorial = false
+        if countries[countryid].name == "Tutorial" then tutorial = true end
+        gamestate = 1
+      end
+    end
+  elsif gamestate == 1 then
+    taxrate = stats[0]
+    govtcontrol = stats[1]
+    policecontrol = stats[2]
+    military = stats[3]
+    speech = stats[4]
+    stats[5] = control
+    stats[6] = unrest
+    if tutorial then
+      if hover(0,-74,50,10) and mouse.press then
+        tutorialstate += 1
+      end
+      if tutorialstate >= tutorialsteps.length then
+        tutorial = false
+      end
+      if tutorialstate == 0 then
+        arrow = false
+      elsif tutorialstate == 1 then
+        arrow = true
+        arrowx = 0-rightalign+60
+        arrowy = 80
+      elsif tutorialstate == 2 then
+        arrow = true
+        arrowx = 0-rightalign+60
+        arrowy = 60
+      elsif tutorialstate == 3 then
+        unrest = 100
+        arrow = true
+        arrowx = 0-rightalign+60
+        arrowy = 60
+      elsif tutorialstate == 4 then
+        unrest = 5
+        arrow = false
+        countries[0].citystates[1] = 0
+      elsif tutorialstate == 5 then
+        arrow = true
+        arrowx = 30
+        arrowy = -35
+        camx = 0-countries[0].cityx[1]*5*scaling
+        camy = 0-countries[0].cityy[1]*5*scaling
+        countries[0].citystates[1] = 50
+      elsif tutorialstate == 6 then
+        arrow = true
+        arrowx = 30
+        arrowy = -35
+        camx = 0-countries[0].cityx[1]*5*scaling
+        camy = 0-countries[0].cityy[1]*5*scaling
+        countries[0].citystates[1] = 50
+      elsif tutorialstate == 7 then
+        arrow = true
+        arrowx = 30
+        arrowy = -35
+        camx = 0-countries[0].cityx[1]*5*scaling
+        camy = 0-countries[0].cityy[1]*5*scaling
+        if countries[0].citystates[1] > 1 then countries[0].citystates[1] -= 0.03 end
+        if countries[0].citystates[1] <= 1 then countries[0].citystates[1] = 0 end
+      elsif tutorialstate == 8 then
+        arrow = true
+        arrowx = rightalign-50
+        arrowy = 0
+      elsif tutorialstate == 9 then
+        arrow = true
+        arrowx = rightalign-30
+        arrowy = 80
+      elsif tutorialstate == 10 then
+        arrow = true
+        arrowx = rightalign-30
+        arrowy = 60
+      elsif tutorialstate == 11 then
+        arrow = true
+        arrowx = rightalign-30
+        arrowy = 45
+      elsif tutorialstate == 12 then
+        arrow = true
+        arrowx = rightalign-30
+        arrowy = 25
+      elsif tutorialstate == 13 then
+        arrow = true
+        arrowx = 30
+        arrowy = -35
+        camx = 0-countries[0].cityx[2]*5*scaling
+        camy = 0-countries[0].cityy[2]*5*scaling
+        militarycity = 2
+      elsif tutorialstate == 14 then
+        arrow = true
+        arrowx = rightalign-30
+        arrowy = 5
+      elsif tutorialstate == 15 then
+        arrow = true
+        arrowx = 25
+        arrowy = -35
+        camx = 0-countries[0].cityx[0]*5*scaling
+        camy = 0-countries[0].cityy[0]*5*scaling
+      else
+        arrow = false
+      end
+    else
+      if keyboard.UP then camyvel -= 1 end
+      if keyboard.DOWN then camyvel += 1 end
+      if keyboard.LEFT then camxvel += 1 end
+      if keyboard.RIGHT then camxvel -= 1 end
+      // if mouse.left then
+      //   camx = camx - (initx - mouse.x)
+      //   camy = camy - (inity - mouse.y)
+      //   initx = mouse.x
+      //   inity = mouse.y
+      // end
+      camyvel /= 1.2
+      camy += camyvel
+      camxvel /= 1.2
+      camx += camxvel
+      ticks += 1
+      if ticks > 120 then
+        month += 1
+        ticks = 0
+      end
+      revolts = 0
+      for i = 0 to countries[countryid].citynames.length-1
+        city = object
+          cityx = countries[countryid].cityx[i]*5*scaling
+          cityy = countries[countryid].cityy[i]*5*scaling
+          name = countries[countryid].citynames[i]
+          state = countries[countryid].citystates[i]
+          destroyed = false
+          revolts = 0
+        end
+        if city.state != 0 then
+          revolts += 1
+        end
+        if hover(city.cityx+camx,city.cityy+camy,16*scaling*cityscaling,16*scaling*cityscaling) and mouse.press then
+          militarycity = i
+        end
+      end
+      unrestchance = 10 + speech/1.5 - taxrate/15 - military/75
+      unrestrate = taxrate/3000 + govtcontrol/1000 - speech/750 + revolts/40
+      if random.nextInt(unrestchance) == 1 then
+        unrest += unrestrate
+      end
+      revoltchance = 1000-unrest*6
+      if random.nextInt(revoltchance) == 1 then
+        cityid = random.nextInt(countries[countryid].citynames.length-1)+1
+        for i = 0 to countries[countryid].citynames.length-1
+          if i == cityid and countries[countryid].citystates[i] == 0 then
+            countries[countryid].citystates[i] = 50
+          end
+        end
+      end
+      if unrest >= 100 or money < 0 then
+        gamestate = 2
+      end
+      if control >= 100 then
+        gamestate = 3
+      end
+      revoltreduction = policecontrol/10000
+      for i = 0 to countries[countryid].citynames.length-1
+        if countries[countryid].citystates[i] >= 0 then countries[countryid].citystates[i] -= revoltreduction end
+        if countries[countryid].citystates[i] >= 0 and militarycity == i then countries[countryid].citystates[i] -= military/1000 end
+        if countries[countryid].citystates[i] < 0 then 
+          countries[countryid].citystates[i] = 0
+        end
+      end
+      money += ((gdp/1440)*(govtcontrol/55)*(taxrate/30))/((revolts+20)/10)
+      control = (govtcontrol+policecontrol+military+speech)/4
+      
+      if ticks%61 == 0 then
+        time.seconds += 1
+      end
+      if time.seconds >= 60 then
+        time.minutes += 1
+        time.seconds = 0
+      end
+      
+      if camx > sprites[countries[countryid].name.toLowerCase()].width then
+        camx = sprites[countries[countryid].name.toLowerCase()].width
+      end
+      if camx < 0-sprites[countries[countryid].name.toLowerCase()].width then
+        camx = 0-sprites[countries[countryid].name.toLowerCase()].width
+      end
+      if camy > sprites[countries[countryid].name.toLowerCase()].height then
+        camy = sprites[countries[countryid].name.toLowerCase()].height
+      end
+      if camy < 0-sprites[countries[countryid].name.toLowerCase()].height then
+        camy = 0-sprites[countries[countryid].name.toLowerCase()].height
+      end
+    end
+  elsif gamestate == 2 then
+    if hover(0,-50,100,15) and mouse.press then
+      initialize()
+      gamestate = 1
+    end
+    if hover(0,-70,100,15) and mouse.press then
+      initialize()
+      gamestate = 0
+    end
+  else
+    if hover(0,-50,100,15) and mouse.press then
+      initialize()
+      gamestate = 1
+    end
+    if hover(0,-70,100,15) and mouse.press then
+      initialize()
+      gamestate = 0
+    end
+  end
+  // updateCountryData()
+end
+
+draw = function()
+  screen.setFont("PixelArial")
+  if gamestate == 0 then
+    screen.clear()
+    screen.drawSprite("titlescreen",0,0,screen.width)
+    screen.drawSprite("logo",0,0,200)
+    screen.drawText("Click to begin...",0,-80,5,"#fffa")
+    if screen.isFontReady("PixelArial") != 1 then
+      screen.drawSprite("blurtitlescreen",0,0,screen.width)
+      screen.drawSprite("logo",0,0,200)
+      screen.drawText("Loading...",0,-80,5,"#fffa")
+    end
+  elsif gamestate == 0.1 then
+    screen.clear()
+    screen.drawSprite("office",0,0,screen.width)
+    // screen.drawSprite("world",0,0,screen.width)
+    screen.fillRect(0,-91,screen.width,18,"#111a")
+    screen.fillRoundRect(0,0,screen.width-10,120,3)
+    screen.drawText("This is the story of The People's Republic of...",0,79.2,6,"#777")
+    screen.drawText("This is the story of The People's Republic of...",0,80.5,6,"#fff")
+    screen.drawText("This is the story of The People's Republic of...",0,80,6,"#ccc")
+    screen.drawText("Select a country to rule over.",0-rightalign+52,-91,4,"#fff")
+    for i = 0 to countries.length-1
+      name = countries[i].name
+      if name == "Tutorial" then
+        screen.fillRoundRect(0+i*85-(3*85)/2,0,80,50,3,"#0faa")
+      else
+        screen.fillRoundRect(0+i*85-(3*85)/2,0,80,50,3,"#fffa")
+      end
+      screen.drawSprite(name.toLowerCase(),0+i*85-(3*85)/2,0,60)
+      screen.setBlending("difference")
+      screen.drawText(name,0+i*85-(3*85)/2,-20,4,"#fff")
+      screen.setBlending("normal")
+    end
+  elsif gamestate == 1 then
+    screen.clear("rgb(24,24,43)")
+    countryname = countries[countryid].name.toLowerCase()
+    screen.drawSprite(countryname,0+camx,0+camy,sprites[countryname].width*scaling,sprites[countryname].height*scaling)
+    revoltingcities = []
+    for i = 0 to countries[countryid].citynames.length-1
+      city = object
+        cityx = countries[countryid].cityx[i]*5*scaling
+        cityy = countries[countryid].cityy[i]*5*scaling
+        name = countries[countryid].citynames[i]
+        state = countries[countryid].citystates[i]
+      end
+      if city.state != 0 then
+        screen.fillRoundRect(city.cityx+camx,city.cityy+camy-26,50,13,3,"#f405")
+        screen.fillRoundRect(city.cityx+camx+(city.state/2)-25,city.cityy+camy-26,city.state,13,3,"#f40")
+        revoltingcities.push(i)
+      else
+        screen.fillRoundRect(city.cityx+camx,city.cityy+camy-26,50,13,3,"#111a")
+      end
+      if militarycity == i then
+        screen.setLineWidth(1)
+        screen.fillRoundRect(city.cityx+camx,city.cityy+camy-26,50,13,3,"#1976")
+        screen.drawRoundRect(city.cityx+camx,city.cityy+camy-26,50,13,3,"#197")
+      end
+      if i == 0 then
+        if city.state == 0 then
+          screen.drawSprite("capital",city.cityx+camx,city.cityy+camy,24*scaling*cityscaling,16*scaling*cityscaling)
+        elsif city.state > 0 and not city.destroyed then
+          screen.drawSprite("revoltingcapital",city.cityx+camx,city.cityy+camy,24*scaling*cityscaling,16*scaling*cityscaling)
+        else
+          screen.drawSprite("rubble",city.cityx+camx,city.cityy+camy,16*scaling*cityscaling,16*scaling*cityscaling)
+        end
+        screen.drawText(city.name,city.cityx+camx,city.cityy+camy-26,4,"#0fa")
+      else
+        if city.state == 0 then
+          screen.drawSprite("city",city.cityx+camx,city.cityy+camy,16*scaling*cityscaling,16*scaling*cityscaling)
+        elsif city.state > 0 and not city.destroyed then
+          screen.drawSprite("revoltingcity",city.cityx+camx,city.cityy+camy,16*scaling*cityscaling,16*scaling*cityscaling)
+        else
+          screen.drawSprite("rubble",city.cityx+camx,city.cityy+camy,16*scaling*cityscaling,16*scaling*cityscaling)
+        end
+        screen.drawText(city.name,city.cityx+camx,city.cityy+camy-26,4,"#fff")
+      end
+    end
+    if revolts>0 then
+      for i = 0 to revoltingcities.length-1
+        text = countries[countryid].citynames[revoltingcities[i]]+" is revolting!"
+        screen.drawText(text,0-rightalign+5+screen.textWidth(text,4)/2,-70+i*10,4,"#f65a")
+      end
+    end
+    screen.fillRoundRect(0-rightalign+60,110,110,100,5,"#111a")
+    screen.fillRoundRect(rightalign-60,55,110,100,5,"#111a")
+    screen.fillRect(0,-91,screen.width,18,"#111a")
+    screen.drawText("The People's Republic of "+countries[countryid].name,0-rightalign+screen.textWidth("The People's Republic of "+countries[countryid].name,4)/2+5,-91,4,"#fff")
+    screen.drawText(months[month%12]+" "+(2000+floor(month/12)),rightalign-30,-91,4,"#fffa")
+    screen.drawText("$"+round(money)+" billion",rightalign-150,-90.5,7,"#ff5")
+    screen.drawText("$"+round(money)+" billion",rightalign-150,-91.6,7,"#c70")
+    screen.drawText("$"+round(money)+" billion",rightalign-150,-91,7,"#fa0")
+    
+    // upgrades
+    bar(rightalign-60,90,"Excessive Taxes",0,0,"#fa0",2)
+    bar(rightalign-60,72,"Government Control",1,0,"#30f",1)
+    bar(rightalign-60,54,"Police Control",2,1,"#0bf",1)
+    bar(rightalign-60,36,"Military",3,2,"#197",1)
+    bar(rightalign-60,18,"Media Control",4,3,"#f08",1)
+    // stats
+    bar(0-rightalign+60,90,"Control",5,0,"#0b0",0)
+    bar(0-rightalign+60,72,"Unrest",6,0,"#f40",0)
+    
+    if speech > 70 then
+      screen.drawSprite("propaganda",rightalign-15,-20,16,16)
+    end
+    if tutorial == true then
+      screen.fillRoundRect(0,-70,20+screen.textWidth(tutorialsteps[tutorialstate],3),20,3,"#111a")
+      screen.drawText(tutorialsteps[tutorialstate],0,-66,3,"#fff")
+      screen.drawText("Next",0,-74,3,"#0fa")
+      if arrow then screen.drawSprite("arrow",arrowx,arrowy,16) end
+    end
+  elsif gamestate == 2 then
+    camx = 0
+    camy = 0
+    scaling = 0.5
+    screen.clear()
+    screen.clear("rgb(24,24,43)")
+    countryname = countries[countryid].name.toLowerCase()
+    screen.drawSprite(countryname,0+camx,0+camy,sprites[countryname].width*scaling,sprites[countryname].height*scaling)
+    for i = 0 to countries[countryid].citynames.length-1
+      city = object
+        cityx = countries[countryid].cityx[i]*5*scaling
+        cityy = countries[countryid].cityy[i]*5*scaling
+        name = countries[countryid].citynames[i]
+        state = countries[countryid].citystates[i]
+      end
+      if i == 0 then
+        if city.state == 0 then
+          screen.drawSprite("capital",city.cityx+camx,city.cityy+camy,24*scaling,16*scaling)
+        else
+          screen.drawSprite("revoltingcapital",city.cityx+camx,city.cityy+camy,24*scaling,16*scaling)
+        end
+      else
+        if city.state == 0 then
+          screen.drawSprite("city",city.cityx+camx,city.cityy+camy,16*scaling,16*scaling)
+        else
+          screen.drawSprite("revoltingcity",city.cityx+camx,city.cityy+camy,16*scaling,16*scaling)
+        end
+      end
+    end
+    screen.setBlending("color")
+    screen.fillRect(0,0,screen.width,screen.height,"#f005")
+    screen.setBlending("normal")
+    screen.setLineWidth(0.2)
+    screen.setColor("#fa0")
+    screen.drawText("Ousted!",0,0.5,7,"#fa5")
+    screen.drawText("Ousted!",0,-0.5,7,"#c00")
+    screen.drawText("Ousted!",0,0,7,"#f00")
+    screen.drawText("Return again to oppress thy subjects?",0,-30,4,"#fffa")
+    screen.drawText("Sure",0,-50,4,"#fa0")
+    if hover(0,-50,100,15) then
+      screen.fillRoundRect(0,-50,100,15,5,"#fa0")
+      screen.drawText("Sure",0,-50,4,"#000")
+    else
+      screen.drawRoundRect(0,-50,100,15,5,"#fa0")
+    end
+    screen.drawText("Exit game",0,-70,4,"#faaa")
+    if hover(0,-70,100,15) then
+      screen.fillRoundRect(0,-70,100,15,5,"#f00")
+      screen.drawText("Exit game",0,-70,4,"#000")
+    else
+      screen.drawRoundRect(0,-70,100,15,5,"#f00")
+    end
+  else
+    camx = 0
+    camy = 0
+    scaling = 0.5
+    screen.clear()
+    screen.clear("rgb(24,24,43)")
+    countryname = countries[countryid].name.toLowerCase()
+    countryname = countryname.replace(" ", "")
+    screen.drawSprite(countryname,0+camx,0+camy,sprites[countryname].width*scaling,sprites[countryname].height*scaling)
+    for i = 0 to countries[countryid].citynames.length-1
+      city = object
+        cityx = countries[countryid].cityx[i]*5*scaling
+        cityy = countries[countryid].cityy[i]*5*scaling
+        name = countries[countryid].citynames[i]
+        state = countries[countryid].citystates[i]
+      end
+      if i == 0 then
+        if city.state == 0 then
+          screen.drawSprite("capital",city.cityx+camx,city.cityy+camy,24*scaling,16*scaling)
+        else
+          screen.drawSprite("revoltingcapital",city.cityx+camx,city.cityy+camy,24*scaling,16*scaling)
+        end
+      else
+        if city.state == 0 then
+          screen.drawSprite("city",city.cityx+camx,city.cityy+camy,16*scaling,16*scaling)
+        else
+          screen.drawSprite("revoltingcity",city.cityx+camx,city.cityy+camy,16*scaling,16*scaling)
+        end
+      end
+    end
+    screen.setBlending("color")
+    screen.fillRect(0,0,screen.width,screen.height,"rgb(24,24,43)")
+    screen.setBlending("normal")
+    screen.drawText("Victory!",0,0.5,7,"#ff5")
+    screen.drawText("Victory!",0,-0.5,7,"#c70")
+    screen.drawText("Victory!",0,0,7,"#fa0")
+    screen.drawText("Thou has taken "+time.minutes+" minutes and "+time.seconds+" seconds to achieve total domination.",0,-20,5,"#fa0")
+    bar(0,-40,"Unrest",6,0,"#f40",0)
+    screen.setLineWidth(0.2)
+    if hover(0,-70,100,15) then
+      screen.fillRoundRect(0,-70,100,15,5,"#fa0")
+      screen.drawText("Back to Menu",0,-70,4,"#000")
+    else
+      screen.drawRoundRect(0,-70,100,15,5,"#fa0")
+      screen.drawText("Back to Menu",0,-70,4,"#fff")
+    end
+  end
+end
+end()
+
+
+</script></html>
